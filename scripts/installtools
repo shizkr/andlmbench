@@ -1,0 +1,52 @@
+#!/bin/bash
+
+tools=(cache mhz bw_file_rd bw_mem bw_mmap_rd bw_pipe bw_unix lat_cmd \
+	   lat_ctx lat_fcntl lat_fs lat_mem_rd lat_mmap lat_ops lat_pipe \
+	   lat_pagefault lat_proc lat_rand lat_sig lat_syscall lat_unix \
+	   lat_usleep cache line lmdd tlb lmstream memsize lat_unix_connect \
+	   lat_fifo par_mem par_ops enough runlmbench)
+
+usage() {
+	echo "Usage: installtools [DIR]"
+	echo "           This script must be run with the directory which has"
+	echo "           all lmbench tools. [DIR] should have absolute path."
+	echo "       installtools"
+	echo "           No [DIR] is required if the script is executed under"
+	echo "           current directory that has lmbench toosl."
+}
+
+# Should be 1 unit to install
+ret=$(adb devices | grep "" -c)
+
+if [ "$ret" != "3" ]; then
+	echo "Please check your device connection!"
+	adb devices
+	exit 1
+fi
+
+# Verify LMBENCH tools directory
+if [ "$1" != "" ]; then
+	LMDIR="$1"
+else
+	LMDIR="."
+fi
+
+if [ ! -e $LMDIR/mhz ]; then
+	echo "Please check lmbench tool directory, $LMDIR"
+	usage
+	exit 1
+fi
+
+adb remount
+for bin in "${tools[@]}"
+do
+	if [ -e $LMDIR/$bin ]; then
+		echo "$LMDIR/$bin"
+		adb push $LMDIR/$bin /system/bin/
+		adb shell chmod 755 /system/bin/$bin
+	else
+		echo "Can't find $LMDIR/$bin"
+	fi
+done
+
+exit 0;

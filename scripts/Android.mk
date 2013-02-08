@@ -12,6 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-BUILD_LMBENCH := true
+ifeq ($(BUILD_LMBENCH),true)
+LOCAL_PATH := $(call my-dir)
 
-include $(call all-subdir-makefiles)
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := runlmbench
+LOCAL_SRC_FILES := $(LOCAL_MODULE)
+LOCAL_MODULE_CLASS := EXECUTABLES
+LOCAL_MODULE_TAGS := eng
+LOCAL_MODULE_PATH := $(TARGET_OUT_EXECUTABLES)
+
+include $(BUILD_PREBUILT)
+endif
+
