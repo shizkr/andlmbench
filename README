@@ -1,3 +1,14 @@
+README for lmbench android version.
+
+To run lmbench on target, build lmbench with option [TBD] and
+flash system image including lmbench tools.
+	> adb shell
+	> [TBD]
+
+* Supported lmbench tools
+	mhz,
+
+-------------------------------------------------------------------------
 README for lmbench 2alpha8 net release.
 
 To run the benchmark, you should be able to say:

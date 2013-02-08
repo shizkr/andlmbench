@@ -36,12 +36,16 @@ typedef unsigned char bool_t;
 #include        <sys/un.h>
 #include        <sys/resource.h>
 #define PORTMAP
+#ifndef ANDROID
 #include	<rpc/rpc.h>
+#endif
 #endif
 #ifdef HAVE_pmap_clnt_h
 #include	<rpc/pmap_clnt.h>
 #endif
+#ifndef ANDROID
 #include	<rpc/types.h>
+#endif
 #ifdef HAVE_pmap_clnt_h
 #include	<rpc/pmap_clnt.h>
 #endif
