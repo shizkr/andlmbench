@@ -1,9 +1,10 @@
 README for lmbench android version.
 
-To run lmbench on target, build lmbench with option [TBD] and
-flash system image including lmbench tools.
+To run lmbench on target, build system with lmbench tool and
+flash system image including lmbench tools. Locate lmbench directory
+under [TOP]/external/
 	> adb shell
-	> [TBD]
+	> runlmbench
 
 * Supported lmbench tools
 	bw_file_rd, bw_mmap_rd, bw_mem, bw_pipe, bw_unix,
@@ -13,6 +14,13 @@ flash system image including lmbench tools.
 	memsize, mhz, par_mem, par_ops, stream, tlb
 * Unsupported lmbench tools
 	bw_tcp, lat_http, lat_select, lat_tcp, lat_udp
+
+- Manual install by adb tool
+
+  >cd out/target/product/[BOARD]/system/bin
+  >[TOP]/external/lmbench/scripts/installtools
+
+  All lmbench tools are copied under /system/bin/ target directory.
 
 -------------------------------------------------------------------------
 README for lmbench 2alpha8 net release.
