@@ -5,6 +5,11 @@ MAXMEMSIZE="1024M"
 BLOCKSIZE=512
 
 LMBENCHDIR="/usr/local/bin"
+UBUNTU=$(cat /etc/lsb-release | grep "Ubuntu" | grep -c "")
+if [ "$UBUNTU" != "0" ]; then
+	LMBENCHDIR="/usr/lib/lmbench/bin/x86_64-linux-gnu"
+	export PATH=$PATH:/usr/lib/lmbench/bin/x86_64-linux-gnu
+fi
 TMPDIR=`pwd ~`
 TMP="$TMPDIR/file.tmp"
 func="_func"
@@ -88,6 +93,7 @@ get_system_info() {
 	echo "[CPU: `cat /proc/cpuinfo | grep "model name" | head -1`]"
 	echo "[Processors: `cat /proc/cpuinfo | grep processor | grep "" -c`]"
 	echo "[OS: `uname -a`]"
+	echo "[DISTRIB: `cat /etc/lsb-release | grep DISTRIB_DESCRIPTION`]"
 	echo "[CHROME MILESTONE: `cat /etc/lsb-release | grep CHROMEOS_RELEASE_CHROME_MILESTONE`]"
 	echo "[CHROME BOARD: `cat /etc/lsb-release | grep CHROMEOS_RELEASE_BOARD`]"
 	echo "[CHROMEOS: `cat /etc/lsb-release | grep CHROMEOS_RELEASE_DESCRIPTION`]"
@@ -207,12 +213,18 @@ echo "size of file, number created, creations per second, removals per second"
 runcmd "$LMBENCHDIR/lat_fs -s 4K $TMPDIR"
 runcmd "$LMBENCHDIR/lat_fs -s 16K $TMPDIR"
 runcmd "$LMBENCHDIR/lat_fs -s 32K $TMPDIR"
+runcmd "$LMBENCHDIR/lat_fs -s 64K $TMPDIR"
 runcmd "$LMBENCHDIR/lat_fs -s 128K $TMPDIR"
 runcmd "$LMBENCHDIR/lat_fs -s 512K $TMPDIR"
+runcmd "$LMBENCHDIR/lat_fs -s 640K $TMPDIR"
 runcmd "$LMBENCHDIR/lat_fs -s 1M $TMPDIR"
+runcmd "$LMBENCHDIR/lat_fs -s 4M $TMPDIR"
+runcmd "$LMBENCHDIR/lat_fs -s 8M $TMPDIR"
+runcmd "$LMBENCHDIR/lat_fs -s 16M $TMPDIR"
+runcmd "$LMBENCHDIR/lat_fs -s 32M $TMPDIR"
+runcmd "$LMBENCHDIR/lat_fs -s 64M $TMPDIR"
 runcmd "$LMBENCHDIR/lat_fs -s 128M $TMPDIR"
-runcmd "$LMBENCHDIR/lat_fs -s 512M $TMPDIR"
-runcmd "$LMBENCHDIR/lat_fs -s 1024M $TMPDIR"
+runcmd "$LMBENCHDIR/lat_fs -s 256M $TMPDIR"
 }
 
 #
@@ -384,17 +396,21 @@ runcmd "par_mem -M 32M"
 echo ""
 echo "stream"
 echo "---------------------"
-runcmd "stream.lmbench -M 128K"
+if [ "$UBUNTU" != "0" ]; then
+	runcmd "stream -M 128K"
+else
+	runcmd "stream.lmbench -M 128K"
+fi
 
 echo ""
 echo "tlb"
 echo "---------------------"
 runcmd "tlb -M 1M"
 
-echo ""
-echo "cache"
-echo "---------------------"
-runcmd "line.lmbench"
+#echo ""
+#echo "cache"
+#echo "---------------------"
+#runcmd "cache"
 }
 
 #####################################################################

@@ -1,0 +1,342 @@
+###############################
+ LMBENCH MEASUREMENT
+###############################
+[LMBENCH_VER 3.0-a9]
+[CPU: model name	: 06/8e]
+[Processors: 2]
+[OS: Linux ubuntu1 4.19.34-04457-g5b63d4390e96 #1 SMP PREEMPT Mon May 13 14:30:19 PDT 2019 x86_64 x86_64 x86_64 GNU/Linux]
+[DISTRIB: DISTRIB_DESCRIPTION="Ubuntu 18.10"]
+[CHROME MILESTONE: ]
+[CHROME BOARD: ]
+[CHROMEOS: ]
+[KERNEL VER: Linux ubuntu1 4.19.34-04457-g5b63d4390e96 #1 SMP PREEMPT Mon May 13 14:30:19 PDT 2019 x86_64 x86_64 x86_64 GNU/Linux]
+[mhz: 2257 MHz, 0.9191 nanosec clock]
+[MemTotal:        2829264 kB]
+[MB for test: 1024M]
+[ENOUGH: 5000]
+Simple syscall: 0.2628 microseconds
+Simple read: 0.4148 microseconds
+Simple write: 0.3229 microseconds
+Simple stat: 1.4891 microseconds
+Simple fstat: 0.5340 microseconds
+Simple open/close: 2.7193 microseconds
+Signal handler installation: 0.3837 microseconds
+Signal handler overhead: 1.6271 microseconds
+Protection fault: 0.7423 microseconds
+Pipe latency: 19.3545 microseconds
+Pipe bandwidth: 2408.11 MB/sec
+AF_UNIX sock stream latency: 15.5441 microseconds
+AF_UNIX sock stream bandwidth: 7265.21 MB/sec
+Process fork+exit: 166.5862 microseconds
+Process fork+execve: 173.3529 microseconds
+Procedure call: 0.0020 microseconds
+Pagefaults on /home/ubuntu/project/andlmbench/scripts/file.tmp: 0.3490 microseconds
+------------------------------
+1. BANDWIDTH MEASUREMENT
+------------------------------
+
+bw_file_rd
+==========
+MB MB/s
+0.000512 150.81
+0.001024 292.28
+0.002048 582.21
+0.004096 1141.52
+0.008192 2004.91
+0.016384 3113.66
+0.032768 4466.25
+0.065536 5737.66
+0.131072 6448.30
+0.262144 6847.04
+0.524288 7094.70
+1.05 6477.40
+2.10 5314.42
+4.19 4950.98
+8.39 4469.95
+16.78 4496.71
+33.55 4748.72
+67.11 4699.17
+134.22 4848.38
+268.44 5176.66
+536.87 5367.26
+1073.74 5427.46
+
+bw_mem
+======
+MB MB/s
+
+memory read bandwidth
+---------------------
+MB MB/s
+0.000512 52448.43
+0.001024 60026.49
+0.002048 64282.92
+0.004096 65779.63
+0.008192 66736.27
+0.016384 64985.96
+0.032768 63272.50
+0.065536 48141.92
+0.131072 41533.40
+0.262144 39602.60
+0.524288 32732.32
+1.05 30779.00
+2.10 19716.49
+4.19 14763.73
+8.39 13028.04
+16.78 11546.60
+33.55 12217.16
+67.11 11070.42
+134.22 7903.99
+268.44 11987.47
+536.87 12243.91
+1073.74 12226.48
+
+memory write bandwidth
+---------------------
+MB MB/s
+0.000512 34626.63
+0.001024 34752.39
+0.002048 34762.13
+0.004096 34739.32
+0.008192 34681.30
+0.016384 34720.94
+0.032768 33030.54
+0.065536 27729.61
+0.131072 25248.58
+0.262144 24787.12
+0.524288 22555.05
+1.05 21781.08
+2.10 15906.05
+4.19 7889.96
+8.39 6345.39
+16.78 6149.25
+33.55 6067.71
+67.11 5338.39
+134.22 5438.76
+268.44 6037.01
+536.87 6070.38
+1073.74 6061.37
+
+bw_mmap_rd
+==========
+MB MB/s
+
+mmap read bandwidth
+---------------------
+MB MB/s
+0.000512 27510.34
+0.001024 22891.77
+0.002048 23871.88
+0.004096 24245.44
+0.008192 24511.28
+0.016384 24532.95
+0.032768 24520.03
+0.065536 22022.27
+0.131072 21775.87
+0.262144 21245.66
+0.524288 20704.49
+1.05 19366.84
+2.10 14796.84
+4.19 12510.97
+8.39 9638.39
+16.78 9843.86
+33.55 9416.14
+67.11 6462.72
+134.22 6945.29
+268.44 10349.12
+536.87 9525.91
+1073.74 10339.45
+
+mmap read open2close bandwidth
+---------------------
+MB MB/s
+0.000512 53.19
+0.001024 107.24
+0.002048 207.86
+0.004096 401.50
+0.008192 779.19
+0.016384 1387.69
+0.032768 125.33
+0.065536 3230.11
+0.131072 4105.33
+0.262144 6409.50
+0.524288 7847.72
+1.05 7558.67
+2.10 6554.88
+4.19 5987.59
+8.39 4995.20
+16.78 4874.97
+33.55 5221.67
+67.11 5183.75
+134.22 5616.51
+268.44 5966.43
+536.87 6187.43
+1073.74 6311.41
+------------------------------
+2. LATENCY MEASUREMENTS
+------------------------------
+
+lat_mem_rd
+==========
+"stride=8000000
+8.00000 1.841
+12.00000 1.839
+16.00000 1.842
+24.00000 1.837
+32.00000 1.838
+48.00000 1.840
+64.00000 1.841
+96.00000 1.842
+128.00000 1.840
+192.00000 1.841
+256.00000 1.839
+384.00000 1.844
+512.00000 5.264
+768.00000 9.683
+1024.00000 9.679
+
+
+lat_mmap
+==========
+MB usecs
+1.048576 28
+2.097152 43
+4.194304 78
+8.388608 153
+16.777216 292
+33.554432 562
+67.108864 1141
+134.217728 2390
+268.435456 4896
+536.870912 10083
+1073.741824 20667
+
+lat_ops
+==========
+integer bit: 0.31 nanoseconds
+integer add: 0.23 nanoseconds
+integer mul: -0.01 nanoseconds
+integer div: 12.61 nanoseconds
+integer mod: 13.01 nanoseconds
+int64 bit: 0.33 nanoseconds
+uint64 add: 0.24 nanoseconds
+int64 mul: -0.01 nanoseconds
+int64 div: 20.08 nanoseconds
+int64 mod: 19.46 nanoseconds
+float add: 1.89 nanoseconds
+float mul: 1.88 nanoseconds
+float div: 5.34 nanoseconds
+double add: 1.89 nanoseconds
+double mul: 1.88 nanoseconds
+double div: 6.73 nanoseconds
+float bogomflops: 1.45 nanoseconds
+double bogomflops: 1.90 nanoseconds
+
+lat_fs
+==========
+size of file, number created, creations per second, removals per second
+3k	169	29023	36080
+15k	146	28934	30905
+31k	142	22408	28365
+62k	103	19306	26059
+125k	67	13392	20155
+500k	26	4794	9945
+625k	23	3731	8348
+976k	15	2609	5752
+3906k	4	675	1802
+7812k	2	352	940
+15625k	1	180	493
+31250k	1	87	251
+62500k	1	45	127
+125000k	1	24	67
+250000k 1       12      34
+
+lat_ctx
+==========
+size, ovr: non-context switching overhead(usec)
+number of processes, cost of context switch(usec)
+
+"size=0k ovr=1.19
+2 8.13
+
+"size=0k ovr=1.20
+4 9.54
+
+"size=0k ovr=1.20
+8 9.35
+
+"size=0k ovr=1.21
+16 10.39
+
+"size=0k ovr=1.23
+20 59.72
+
+"size=128k ovr=7.53
+2 9.80
+
+"size=128k ovr=7.60
+4 11.67
+
+"size=128k ovr=7.43
+8 14.04
+
+"size=128k ovr=7.53
+16 19.85
+
+"size=128k ovr=7.55
+20 18.73
+------------------------------
+3. OTHER MEASUREMENTS
+------------------------------
+
+par_ops
+---------------------
+integer bit parallelism: 1.77
+integer add parallelism: 2.03
+integer mul parallelism: 16.04
+integer div parallelism: 3.90
+integer mod parallelism: 4.06
+int64 bit parallelism: 1.90
+int64 add parallelism: 1.98
+int64 mul parallelism: 16.04
+int64 div parallelism: 1.68
+int64 mod parallelism: 1.70
+float add parallelism: 8.03
+float mul parallelism: 7.61
+float div parallelism: 3.75
+double add parallelism: 8.05
+double mul parallelism: 7.64
+double div parallelism: 3.55
+
+par_mem
+---------------------
+0.004096 8.03
+0.008192 8.04
+0.016384 7.19
+0.032768 8.02
+0.065536 7.98
+0.131072 6.59
+0.262144 7.87
+0.524288 7.83
+1.048576 6.66
+2.097152 2.54
+4.194304 4.52
+8.388608 3.18
+16.777216 2.81
+
+stream
+---------------------
+STREAM copy latency: 0.61 nanoseconds
+STREAM copy bandwidth: 26289.21 MB/sec
+STREAM scale latency: 0.65 nanoseconds
+STREAM scale bandwidth: 24455.13 MB/sec
+STREAM add latency: 0.85 nanoseconds
+STREAM add bandwidth: 28156.84 MB/sec
+STREAM triad latency: 0.84 nanoseconds
+STREAM triad bandwidth: 28689.53 MB/sec
+
+tlb
+---------------------
+tlb: 31 pages
+
+---------------------
