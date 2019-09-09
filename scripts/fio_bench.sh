@@ -1,6 +1,9 @@
 #!/bin/bash
 
-MAX_SIZE=1024 # It means KB and MB size will be up to 1024
+MAX_SIZE=512 # It means KB and MB size will be up to 1024
+NUMJOBS=4
+RUNTIME=240
+DIRECT=1
 
 # Output: array of Input, divide by 2 until it gets 512
 split_mem_test_size() {
@@ -34,74 +37,34 @@ convert_M2K() {
 	fi
 }
 
-echo "Sequential Read"
-table=$(split_mem_test_size $MAX_SIZE 4)
-for size in ${table[@]}
-do
-	SIZE=$size"K"
-	out=`fio --name=sequentialread --ioengine=libaio --iodepth=1 --rw=read --bs=4k --direct=0 --size=$SIZE --numjobs=1 --runtime=240 --group_reporting | grep "  READ:" | cut -d' ' -f 5 | cut -d '=' -f 2`
-	out=$(convert_M2K $out)
-	echo "$SIZE:	$out"
-done
-table=$(split_mem_test_size $MAX_SIZE 4)
-for size in ${table[@]}
-do
-	SIZE=$size"M"
-	out=`fio --name=sequentialread --ioengine=libaio --iodepth=1 --rw=read --bs=4k --direct=0 --size=$SIZE --numjobs=1 --runtime=240 --group_reporting | grep "  READ:" | cut -d' ' -f 5 | cut -d '=' -f 2`
-	out=$(convert_M2K $out)
-	echo "$SIZE:	$out"
-done
+# Test function
+funcs=("read" "write" "randread" "randwrite")
+# Units
+units=("K" "M")
 
-echo "Sequential Write"
 table=$(split_mem_test_size $MAX_SIZE 4)
+for func in ${funcs[@]}
+do
+echo $func
+for unit in ${units[@]}
+do
 for size in ${table[@]}
 do
-	SIZE=$size"K"
-	out=`fio --name=sequentialwrite --ioengine=libaio --iodepth=1 --rw=write --bs=4k --direct=0 --size=$SIZE --numjobs=1 --runtime=240 --group_reporting | grep "  WRITE:" | cut -d' ' -f 4 | cut -d '=' -f 2`
+	CUT=5
+	func_parse="  READ:"
+	if [[ "$func" =~ "write" ]]; then
+		CUT=4
+		func_parse="  WRITE:"
+	fi
+	SIZE=$size$unit
+	CMD="fio --name=$func --ioengine=libaio --iodepth=1 --rw=$func --bs=4k --direct=$DIRECT --size=$SIZE --numjobs=$NUMJOBS --runtime=$RUNTIME --group_reporting" 
+	if [[ $unit =~ "K" && $size == 4 ]]; then
+		echo $CMD
+	fi
+	out=`$CMD | grep $func_parse | cut -d' ' -f $CUT | cut -d '=' -f 2`
 	out=$(convert_M2K $out)
-	echo "$SIZE:	$out"
+	echo "$SIZE	$out"
 done
-table=$(split_mem_test_size $MAX_SIZE 4)
-for size in ${table[@]}
-do
-	SIZE=$size"M"
-	out=`fio --name=sequentialwrite --ioengine=libaio --iodepth=1 --rw=write --bs=4k --direct=0 --size=$SIZE --numjobs=1 --runtime=240 --group_reporting | grep "  WRITE:" | cut -d' ' -f 4 | cut -d '=' -f 2`
-	out=$(convert_M2K $out)
-	echo "$SIZE:	$out"
 done
-
-echo "Random Read"
-table=$(split_mem_test_size $MAX_SIZE 4)
-for size in ${table[@]}
-do
-	SIZE=$size"K"
-	out=`fio --name=randomread --ioengine=libaio --iodepth=1 --rw=randread --bs=4k --direct=0 --size=$SIZE --numjobs=1 --runtime=240 --group_reporting | grep "  READ:" | cut -d' ' -f 5 | cut -d '=' -f 2`
-	out=$(convert_M2K $out)
-	echo "$SIZE:	$out"
-done
-table=$(split_mem_test_size $MAX_SIZE 4)
-for size in ${table[@]}
-do
-	SIZE=$size"M"
-	out=`fio --name=randomread --ioengine=libaio --iodepth=1 --rw=randread --bs=4k --direct=0 --size=$SIZE --numjobs=1 --runtime=240 --group_reporting | grep "  READ:" | cut -d' ' -f 5 | cut -d '=' -f 2`
-	out=$(convert_M2K $out)
-	echo "$SIZE:	$out"
-done
-
-echo "Random Write"
-table=$(split_mem_test_size $MAX_SIZE 4)
-for size in ${table[@]}
-do
-	SIZE=$size"K"
-	out=`fio --name=randomwrite --ioengine=libaio --iodepth=1 --rw=randwrite --bs=4k --direct=0 --size=$SIZE --numjobs=1 --runtime=240 --group_reporting | grep "  WRITE:" | cut -d' ' -f 4 | cut -d '=' -f 2`
-	out=$(convert_M2K $out)
-	echo "$SIZE:	$out"
-done
-table=$(split_mem_test_size $MAX_SIZE 4)
-for size in ${table[@]}
-do
-	SIZE=$size"M"
-	out=`fio --name=randomwrite --ioengine=libaio --iodepth=1 --rw=randwrite --bs=4k --direct=0 --size=$SIZE --numjobs=1 --runtime=240 --group_reporting | grep "  WRITE:" | cut -d' ' -f 4 | cut -d '=' -f 2`
-	out=$(convert_M2K $out)
-	echo "$SIZE:	$out"
+echo "==========="
 done
