@@ -1,9 +1,11 @@
 #!/bin/bash
 
+VERSION="1.0"
+
 MAX_SIZE=512 # It means KB and MB size will be up to 1024
 NUMJOBS=4
 RUNTIME=240
-DIRECT=1
+DIRECT=0
 
 # Output: array of Input, divide by 2 until it gets 512
 split_mem_test_size() {
@@ -29,11 +31,18 @@ split_mem_test_size() {
 convert_M2K() {
 	if [[ $1 =~ "KiB/s" ]];then
 		echo $1 | sed 's/KiB/\tKiB/g'
-	fi
-	if [[ $1 =~ "MiB/s" ]];then
+	elif [[ $1 =~ "MiB/s" ]];then
 		size=$(echo $1 | sed 's/MiB\/s//g')
 		size=$(echo "$size*1024" | bc -l)
 		echo $size"	KiB/s"
+	elif [[ $1 =~ "KB/s" ]];then
+		echo $1 | sed 's/KB/\tKB/g'
+	elif [[ $1 =~ "MB/s" ]];then
+		size=$(echo $1 | sed 's/MB\/s//g')
+		size=$(echo "$size*1024" | bc -l)
+		echo $size"	KB/s"
+	else
+		echo $1
 	fi
 }
 
@@ -61,10 +70,11 @@ do
 	if [[ $unit =~ "K" && $size == 4 ]]; then
 		echo $CMD
 	fi
-	out=`$CMD | grep $func_parse | cut -d' ' -f $CUT | cut -d '=' -f 2`
+	out=`$CMD | tr ' ' "\n" | grep "bw=" | sed 's/,//g' | cut -d '=' -f 2`
 	out=$(convert_M2K $out)
 	echo "$SIZE	$out"
 done
 done
 echo "==========="
 done
+echo "$0 version: $VERSION"
